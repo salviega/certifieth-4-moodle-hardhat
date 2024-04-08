@@ -1,0 +1,11 @@
+# ==============================================
+# Hardhat and Solidity Development
+# ==============================================
+artifacts
+cache
+coverage*
+gasReporterOutput.json
+node_modules
+typechain-types
+
+

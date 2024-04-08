@@ -1,0 +1,31 @@
+# ==============================================
+# VS Code Configuration
+# ==============================================
+.vscode
+
+# ==============================================
+# Hardhat and Solidity Development
+# ==============================================
+.notes.md
+artifacts
+cache
+coverage
+coverage.json
+deployments
+gas-report.txt
+node_modules
+typechain
+typechain-types
+
+# ==============================================
+# Package Managers
+# ==============================================
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+
+
+
+
+
