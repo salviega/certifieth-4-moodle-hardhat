@@ -63,10 +63,13 @@ contract CertifiETH is
 		verifySignature(_to, _hash, _signature)
 		returns (uint64)
 	{
-		require(courseSchemaIds[_course] != 0, 'safeMint: course schema not found');
+		require(
+			courseSchemaIds[_course] != 0,
+			'attestCourse: course schema not found'
+		);
 		require(
 			attestationIds[_course][_to] == 0,
-			'safeMint: student already has an attestation'
+			'attestCourse: student already has an attestation'
 		);
 
 		uint64 courseSchemaId = courseSchemaIds[_course];
