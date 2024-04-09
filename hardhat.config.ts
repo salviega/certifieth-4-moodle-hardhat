@@ -1,5 +1,6 @@
 import '@nomiclabs/hardhat-ethers'
 import '@nomiclabs/hardhat-etherscan'
+import '@nomicfoundation/hardhat-chai-matchers'
 import '@openzeppelin/hardhat-upgrades'
 import '@typechain/hardhat'
 import 'dotenv/config'
