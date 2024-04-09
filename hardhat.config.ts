@@ -5,11 +5,8 @@ import '@typechain/hardhat'
 import 'dotenv/config'
 import 'hardhat-deploy'
 
-const {
-	BASE_SCAN_API_KEY,
-	BASE_SEPOLIA_RPC_URL,
-	WALLET_PRIVATE_KEY,
-} = process.env
+const { BASE_SCAN_API_KEY, BASE_SEPOLIA_RPC_URL, WALLET_PRIVATE_KEY } =
+	process.env
 
 if (!BASE_SCAN_API_KEY) {
 	throw new Error('BASE_SCAN_API_KEY is not set')
@@ -23,9 +20,7 @@ if (!WALLET_PRIVATE_KEY) {
 	throw new Error('WALLET_PRIVATE_KEY is not set')
 }
 
-const ACCOUNTS: string[] = [
-	WALLET_PRIVATE_KEY,
-]
+const ACCOUNTS: string[] = [WALLET_PRIVATE_KEY]
 
 const GAS: number = 30000000 // gas limit (max 30000000)
 const GAS_PRICE: number = 10000000000
@@ -34,8 +29,8 @@ const SOLC_SETTINGS = {
 	optimizer: {
 		enabled: true,
 		runs: 200
-	}
-	// viaIR: true
+	},
+	viaIR: true
 }
 
 const defaultNetwork = 'hardhat' // change the defaul network if you want to deploy onchain
@@ -51,12 +46,12 @@ const config = {
 			allowUnlimitedContractSize: true
 		},
 		baseSepolia: {
-      accounts: ACCOUNTS,
+			accounts: ACCOUNTS,
 			chainId: 84532,
 			gas: GAS,
 			gasPrice: GAS_PRICE,
 			url: BASE_SEPOLIA_RPC_URL
-    }
+		}
 	},
 	etherscan: {
 		apiKey: {

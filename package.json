@@ -4,17 +4,14 @@
 	"private": true,
 	"license": "MIT",
 	"scripts": {
-		"addMembers:bsctestnet": "hardhat run --network bsctestnet scripts/addMembers.ts",
 		"coverage": "yarn build && hardhat coverage --temp artifacts --network coverage",
 		"build": "yarn clear && yarn compile",
 		"chain": "hardhat node",
 		"clear": "rm -rf ./artifacts ./cache ./typechain-types ./deployments",
 		"compile": "hardhat compile",
 		"deploy": "hardhat deploy",
-		"deploy:bsctestnet": "hardhat run --network bsctestnet scripts/deploy.ts",
-		"deploy-strategy:bsctestnet": "hardhat run --network bsctestnet scripts/deployStrategy.ts",
+		"deploy:baseSepolia": "hardhat run --network baseSepolia scripts/deploy.ts",
 		"deploy:local": "hardhat run --network localhost scripts/deploy.ts",
-		"deploy:mumbai": "hardhat run --network mumbai scripts/deploy.ts",
 		"format": "prettier --write \"./**/*.{js,jsx,ts,tsx,sol}\"",
 		"test": "REPORT_GAS=true hardhat test",
 		"typechain": "yarn hardhat typechain"

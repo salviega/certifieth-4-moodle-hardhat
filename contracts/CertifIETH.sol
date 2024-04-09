@@ -5,11 +5,13 @@ pragma solidity ^0.8.20;
 import {ISP} from '@ethsign/sign-protocol-evm/src/interfaces/ISP.sol';
 import {Attestation} from '@ethsign/sign-protocol-evm/src/models/Attestation.sol';
 import {DataLocation} from '@ethsign/sign-protocol-evm/src/models/DataLocation.sol';
+import '@openzeppelin/contracts/utils/cryptography/ECDSA.sol';
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol';
 import {Ownable} from '@openzeppelin/contracts/access/Ownable.sol';
+using ECDSA for bytes32;
 
 contract CertifiETH is
 	ERC721,
@@ -27,25 +29,40 @@ contract CertifiETH is
 	mapping(string course => mapping(address student => uint64 attestationId))
 		public attestationIds;
 
-	event Attested(
-		uint64 indexed attestationId,
-		uint256 indexed tokenId,
-		address indexed to
-	);
+	event Attested(address indexed to, uint64 indexed attestationId);
+
+	modifier verifySignature(
+		address _signer,
+		bytes32 _hash,
+		bytes memory _signature
+	) {
+		bool isSigner = _hash.recover(_signature) == _signer;
+		require(isSigner, 'verifySignature: Invalid signature');
+		_;
+	}
 
 	constructor(
-		address initialOwner
-	) ERC721('CertifiETH', 'CETH') Ownable(initialOwner) {}
+		address _initialOwner,
+		address _spInstance
+	) ERC721('CertifiETH', 'CETH') Ownable(_initialOwner) {
+		spInstance = ISP(_spInstance);
+	}
 
 	// ************************ //
-	// *  SolucionesCriptoNFT * //
+	// *      CertifiETH      * //
 	// ************************ //
 
-	function mintAttestation(
+	function attestCourse(
 		address _to,
-		string calldata _uri,
+		bytes32 _hash,
+		bytes calldata _signature,
 		string calldata _course
-	) public onlyOwner returns (uint64) {
+	)
+		external
+		onlyOwner
+		verifySignature(_to, _hash, _signature)
+		returns (uint64)
+	{
 		require(courseSchemaIds[_course] != 0, 'safeMint: course schema not found');
 		require(
 			attestationIds[_course][_to] == 0,
@@ -79,13 +96,27 @@ contract CertifiETH is
 
 		attestationIds[_course][_to] = attestationId;
 
+		emit Attested(_to, attestationId);
+		return attestationId;
+	}
+
+	function safeMint(
+		address _to,
+		bytes32 _hash,
+		bytes memory _signature,
+		string calldata _course,
+		string calldata _uri
+	) public onlyOwner verifySignature(_to, _hash, _signature) returns (uint256) {
+		require(
+			attestationIds[_course][_to] != 0,
+			'safeMint: student does not have an attestation'
+		);
+
 		uint256 tokenId = tokenCounterId++;
 		_safeMint(_to, tokenId);
 		_setTokenURI(tokenId, _uri);
 
-		emit Attested(attestationId, tokenId, _to);
-
-		return attestationId;
+		return tokenId;
 	}
 
 	// ************************ //
