@@ -23,7 +23,7 @@ async function main() {
 	const signers = await ethers.getSigners()
 
 	accounts = {
-		owner: signers[0],
+		owner: signers[0]
 	}
 	const { owner } = accounts
 
@@ -47,14 +47,20 @@ async function deployContracts() {
 	const [owner] = await ethers.getSigners()
 
 	// Deploy CertifiETH contract
-	const certifiETH = await deployContract('CertifiETH', [owner.address, SIGN_PROTOCOL_BASE_SEPOLIA_ADDRESS])
-  const certifiAddress = await certifiETH.getAddress()
-	await verify(certifiAddress, [owner.address, SIGN_PROTOCOL_BASE_SEPOLIA_ADDRESS])
+	const certifiETH = await deployContract('CertifiETH', [
+		owner.address,
+		SIGN_PROTOCOL_BASE_SEPOLIA_ADDRESS
+	])
+	const certifiAddress = await certifiETH.getAddress()
+	await verify(certifiAddress, [
+		owner.address,
+		SIGN_PROTOCOL_BASE_SEPOLIA_ADDRESS
+	])
 
 	// Log deployed contracts
 	console.log('\n 📜 Deployed contracts')
 	console.table({
-		certifiETH: certifiAddress,
+		certifiETH: certifiAddress
 	})
 
 	const contractsDeployed = {
@@ -69,14 +75,14 @@ async function deployContracts() {
 
 	// Return all deployed contracts
 	return {
-		certifiETH,
+		certifiETH
 	}
 }
 
 async function deployContract(contractName: string, args: any[]) {
-	const ContractFactory: ContractFactory = await ethers.getContractFactory(
-		contractName
-	)
+	const ContractFactory: ContractFactory =
+		await ethers.getContractFactory(contractName)
+
 	const contract = await ContractFactory.deploy(...args)
 	return contract
 }
