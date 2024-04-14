@@ -1,6 +1,6 @@
 # CertifiETH 4 Moodle - hardhat
 
-Scaling Ethereum 2024
+ETHGlobal: Scaling Ethereum 2024
 
 ## Quick start 🏄
 
